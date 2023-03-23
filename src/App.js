@@ -7,6 +7,7 @@ import ImageSlider from "react-image-comparison-slider";
 
 function App() {
   const [id, setId] =  useState(null)
+  const [promptValue, setPromptValue] =  useState('')
   const loadingStatus = useRef();
   const [readerFile, setReaderFile] =  useState(null)
   const [url1, setURL1] =  useState(null)
@@ -48,7 +49,7 @@ function App() {
       input: {
         image:
           readerFile,
-        prompt: 'crooked room',
+        prompt: promptValue,
       },
     };
     const ans = await axios({
@@ -83,15 +84,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {!readerFile ? <img src={logo} className="App-logo" alt="logo" /> : <img src={readerFile} /> }
         <div {...getRootProps()}>
-        <input {...getInputProps()} />
-        {
-          isDragActive ?
-            <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to select files</p>
-        }
-      </div>
+          <input {...getInputProps()} />
+          {
+            readerFile ?
+              <p>Image Added Successfully...</p> :
+              <p>Drag 'n' drop some files here, or click to select files</p>
+          }
+        </div>
+        <label>Please Enter the prompt</label>
+        <input onChange={(e) => {setPromptValue(e.target.value)}} value={promptValue} />
         <br />
         {id && <p>The id is :{id}</p>}
         {/* {url1 && <a href={url1} target="_blank">Image 1</a>}
