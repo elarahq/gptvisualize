@@ -7,6 +7,7 @@ import ImageSlider from "react-image-comparison-slider";
 
 function App() {
   const [id, setId] =  useState(null)
+  const [isLoading, setIsLoading] =  useState(false)
   const [promptValue, setPromptValue] =  useState('')
   const loadingStatus = useRef();
   const [readerFile, setReaderFile] =  useState(null)
@@ -44,6 +45,7 @@ function App() {
     }, [id, loadingStatus.current]);
 
   const firstAPI = async () => {
+    setIsLoading(true)
     const testData = {
       version: '854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b',
       input: {
@@ -77,6 +79,7 @@ function App() {
       loadingStatus.current = true
       setURL1(actualAns.data.output[0])
       setURL2(actualAns.data.output[1])
+      setIsLoading(false)
     }
     return actualAns;
   };
@@ -96,7 +99,8 @@ function App() {
         <label>Please Enter the prompt</label>
         <input onChange={(e) => {setPromptValue(e.target.value)}} value={promptValue} />
         <br />
-        {id && <p>The id is :{id}</p>}
+        {isLoading && <p>Loading....</p>}
+        {/* {id && <p>The id is :{id}</p>} */}
         {/* {url1 && <a href={url1} target="_blank">Image 1</a>}
         {url2 && <a href={url2} target="_blank">image 2</a>} */}
         {url2 && 
